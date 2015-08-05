@@ -70,14 +70,41 @@ class login(object):
 		self.conn.request("POST",self.redirect,data, header)
 		response = self.conn.getresponse()
 		print response.status
+		cookiePattern = re.compile(r"(?P<cookie>.+?); expires.+?; path.+?; domain.+?; httponly,?")
+		cookieList = []
+		cookieinfo = response.getheader('set-cookie')
+		cookieMatches = cookiePattern.finditer(cookieinfo)
+		for match in cookieMatches:
+			cookieList.append(match.group('cookie'))
+		self.sub = cookieList[0]
+		self.gsid = cookieList[1]
+
+		return
+
+	def login(self):
+		self.fetch()
+		self.cookie = self.cookie + '; '+self.sub + '; ' + self.gsid
+		header = {	'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.107 Safari/537.36',
+				'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+				'Accept-Encoding':'gzip, deflate',
+				'Accept-Language':'zh-CN,zh;q=0.8',
+				'Connection':'keep-alive',	
+				'Cache-Control':'max-age=0',
+				'Content-Type':'application/x-www-form-urlencoded',				
+				'Host':'weibo.cn',
+				'Cookie': str(self.cookie),
+				'Upgrade-Insecure-Requests':1
+			}
+		self.conn=httplib.HTTPSConnection("weibo.cn")
+		self.conn.request("GET","http://weibo.cn/2796653044/profile?page=1&vt=4",'', header)
+		response = self.conn.getresponse()
+
 		data = response.read()
 		buff = gzip.GzipFile(fileobj=StringIO(data))
 		data = buff.read()
 		print data
-		return
 
-httplib.HTTPConnection.debuglevel = 1
 
 l = login()
-l.fetch()
+l.login()
 
