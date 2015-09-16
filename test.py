@@ -29,12 +29,10 @@ def fetch():
 				'Accept-Language':'zh-CN,zh;q=0.8',
 				'Cache-Control':'max-age=0',
 				'Connection':'keep-alive',
-				'Content-Length':'191',
 				'Content-Type':'application/x-www-form-urlencoded',
-				'Cookie':'_T_WM=6935b80b7dfc8944210d3c536f2d3a97',
 				'Host':'login.weibo.cn',
 				'Origin':'https://login.weibo.cn',
-				'Referer':'https://login.weibo.cn/login/?ns=1&revalid=2&backURL=http%3A%2F%2Fweibo.cn%2F&backTitle=%CE%A2%B2%A9&vt=',
+				'Referer':'https://login.weibo.cn/login/?',
 				'Upgrade-Insecure-Requests':'1',
 			}
 	param = {	
